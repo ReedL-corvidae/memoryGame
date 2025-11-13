@@ -1,32 +1,46 @@
+import { Toolbox } from "./toolbox.js";
+
 export class Card {
 
-    x = 10;
-    y = 10;
+    x = 50;
+    y = 50;
+    color;
     width = 100;
     height = 150;
+    isFaceUp = false;
     canvas;
     pencil;
+    toolbox = new Toolbox();
 
-     constructor(canvas, pencil) {
+     constructor(canvas, pencil, x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
         this.canvas = canvas;
         this.pencil = pencil;
+        canvas.addEventListener("click", (e) => this.onClick(e));
     }
 
-    drawCard(){
-        this.pencil.fillStyle = "black";
-        this.pencil.fillRect(
-            this.x, 
-            this.y, 
-            this.width, 
-            this.height
-        ); // x, y, w, h
+    draw(){
+        if(this.isFaceUp){
+            this.pencil.fillStyle = this.color;
+            this.pencil.fillRect(this.x, this.y, this.width, this.height);
+        } else {
+            this.pencilStrokeStyle = "gray";
+            this.pencilWidth = 10;
+            this.pencil.strokeRect(this.x, this.y, this.width, this.height);
+        }
     }
-    getRandomCardColor(){
-        let red = Math.floor(Math.random() * 256);
-        let green = Math.floor(Math.random() * 256);
-        let blue = Math.floor(Math.random() * 256);
-        //return color
-        return "rgb(" + red + "," + green + "," + blue + ")";
+
+    onClick(event){
+        let clickX = event.offsetX;
+        let clickY = event.offsetY;
+
+        let isClickInCard = this.toolbox.isWithinRect(clickX, clickY, this.x, this.y, this.height, this.width);
+
+        if(isClickInCard){
+            this.isFaceUp = !this.isFaceUp;
+        }
     }
 
 }
