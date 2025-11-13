@@ -8,3 +8,6 @@ function gameLoop(){
 
 }
 setInterval(gameLoop, 50);
+
+let cardColor = card.getRandomCardColor();
+console.log(cardColor);
