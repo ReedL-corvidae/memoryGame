@@ -1,4 +1,5 @@
 import { Toolbox } from "./toolbox.js";
+import { onCardFlipped } from "./code.js";
 
 export class Card {
 
@@ -18,6 +19,11 @@ export class Card {
         this.color = color;
         this.canvas = canvas;
         this.pencil = pencil;
+        this.width;
+        this.height;
+
+        this.isFaceUp = false;
+
         canvas.addEventListener("click", (e) => this.onClick(e));
     }
 
@@ -32,14 +38,20 @@ export class Card {
         }
     }
 
+  
+    
     onClick(event){
+
         let clickX = event.offsetX;
         let clickY = event.offsetY;
 
-        let isClickInCard = this.toolbox.isWithinRect(clickX, clickY, this.x, this.y, this.height, this.width);
+        let isClickInCard = this.toolbox.isWithinRect(clickX, clickY, this.x, this.y, this.width, this.height);
 
         if(isClickInCard){
-            this.isFaceUp = !this.isFaceUp;
+            if(!this.isFaceUp && !this.matched){
+                this.isFaceUp = true;
+                onCardFlipped(this);
+            }
         }
     }
 
