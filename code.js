@@ -15,6 +15,10 @@ let stickbugEnding = document.getElementById("stickbugEnd");
 //flipped cards tracker
 let flippedCards = [];
 
+//Stop the game
+let isDone = false;
+let isRunning =  setInterval(gameLoop, 50);
+
 //rounds array
 let round = 1;
 let maxRounds = 4;
@@ -96,12 +100,13 @@ function createDeck(pair){
     console.log("create deck working");
 }
 
+//starts the round
 function startRound(round){
     cards = [];
     flippedCards = [];
-
+    
     let numPairs = round + 4;
-
+    //Adds another card set for a new round
     for (let i = 0; i < numPairs; i++){
         let color = toolbox.getRandomColor();
 
@@ -114,6 +119,7 @@ function startRound(round){
     positionCards(cards);
 }
 
+//the game loop.. dundundun
 function gameLoop(){
     pencil.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -123,16 +129,39 @@ function gameLoop(){
         //console.log("this is working");
     });
 
+    //counts the number of rounds!
     if(cards.length == 0) {
         round++;
 
+        //if the number of rounds exceeds the expected maxrounds, it labels it as Done.
         if (round > maxRounds){
+            console.log("im here!!");
             round = 0;
+            isDone = true;
+            console.log(isDone);
         }
         startRound(round);
     }
 
 
 }
+//sets number of starting cards
 createDeck(4);
-setInterval(gameLoop, 50);
+
+//stops the came.
+function gameRunning(){
+    if (isDone == false){
+        console.log("im running");
+         isRunning;
+    } else {
+        clearInterval(isRunning);
+        pencil.clearRect(0, 0, canvas.width, canvas.height);
+        pencil.drawImage(stickbugEnding, 0, 0, canvas.width, canvas.height);
+    } 
+
+}
+
+//runs the game and tests for rounds
+console.log(round);
+console.log(maxRounds);
+setInterval(gameRunning, 50);
